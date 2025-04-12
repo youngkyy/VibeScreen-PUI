@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Musik - VibeScreen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="container mx-auto p-6 max-w-3xl">
+    <h1 class="text-3xl font-bold mb-6 text-center">Edit Musik</h1>
+
+    <form action="{{ url_for('edit_music', id=music[0]) }}" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" name="title" value="{{ music[1] }}" placeholder="Judul Lagu" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="mood" value="{{ music[2] }}" placeholder="Mood" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="artist" value="{{ music[3] }}" placeholder="Artis" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="album" value="{{ music[4] }}" placeholder="Album" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="release_year" value="{{ music[5] }}" placeholder="Tahun Rilis" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="genre" value="{{ music[6] }}" placeholder="Genre" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="rating" value="{{ music[7] }}" placeholder="Rating" required class="p-2 rounded bg-gray-700">
+        <input type="text" name="image_url" value="{{ music[8] }}" placeholder="URL Gambar" class="p-2 rounded bg-gray-700 md:col-span-2">
+      </div>
+
+      <div class="mt-6 flex justify-between items-center">
+        <a href="{{ url_for('music') }}" class="text-gray-400 hover:underline">Kembali</a>
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 px-5 py-2 rounded text-white font-semibold">Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

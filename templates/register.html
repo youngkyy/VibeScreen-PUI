@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Admin - VibeScreen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-md">
+    <h2 class="text-2xl font-bold text-center mb-6 text-purple-400">Register Admin</h2>
+
+    {% if error %}
+      <p class="text-red-500 text-center mb-4">{{ error }}</p>
+    {% endif %}
+
+    <form id="registerForm" action="/register" method="POST" class="bg-gray-800 p-8 rounded-lg shadow-lg">
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-medium">Username</label>
+        <input type="text" id="username" name="username" required 
+               class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
+      </div>
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input type="email" id="email" name="email" required 
+               class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium">Password</label>
+        <input type="password" id="password" name="password" required 
+               class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
+      </div>
+      <div class="mb-6">
+        <label for="confirm_password" class="block text-sm font-medium">Konfirmasi Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required 
+               class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md">
+      </div>
+      <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+        Register
+      </button>
+    </form>
+
+    <p class="mt-4 text-center text-sm text-gray-400">
+      Sudah punya akun? 
+      <a href="/login" class="text-purple-400 hover:text-purple-300 font-medium">Login di sini</a>
+    </p>
+  </div>
+
+  {% if success %}
+    <script>
+      Swal.fire({
+        title: "Registrasi Berhasil!",
+        text: "Akun admin berhasil dibuat. Silakan login.",
+        icon: "success",
+        confirmButtonText: "OK"
+      }).then(() => {
+        window.location.href = "/login";
+      });
+    </script>
+  {% endif %}
+
+  <script>
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      const password = document.getElementById("password").value;
+      const confirm = document.getElementById("confirm_password").value;
+
+      if (password.length < 6) {
+        e.preventDefault();
+        Swal.fire({
+          icon: 'warning',
+          title: 'Password terlalu pendek',
+          text: 'Password harus minimal 6 karakter.'
+        });
+      } else if (password !== confirm) {
+        e.preventDefault();
+        Swal.fire({
+          icon: 'warning',
+          title: 'Konfirmasi tidak cocok',
+          text: 'Password dan konfirmasi tidak sama.'
+        });
+      }
+    });
+  </script>
+</body>
+</html>

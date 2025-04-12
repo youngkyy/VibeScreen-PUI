@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Admin - VibeScreen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+  <div class="w-full max-w-md">
+    <form method="POST" class="bg-gray-800 p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-bold mb-6 text-center text-purple-400">Login Admin</h2>
+
+      {% if error %}
+        <p class="text-red-500 text-center text-sm mb-4">{{ error }}</p>
+      {% endif %}
+
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input type="email" id="email" name="email" required 
+               class="mt-1 w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md placeholder-gray-400">
+      </div>
+
+      <div class="mb-6">
+        <label for="password" class="block text-sm font-medium">Password</label>
+        <input type="password" id="password" name="password" required 
+               class="mt-1 w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md placeholder-gray-400">
+      </div>
+
+      <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+        Login
+      </button>
+
+      <p class="mt-4 text-center text-sm text-gray-400">
+        Belum punya akun admin? 
+        <a href="/register" class="text-purple-400 hover:text-purple-300 font-medium">Daftar di sini</a>
+      </p>
+    </form>
+  </div>
+</body>
+</html>

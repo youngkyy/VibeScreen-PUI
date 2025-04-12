@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Film - VibeScreen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <div class="container mx-auto p-5 max-w-3xl">
+        <h1 class="text-3xl font-bold mb-6">Edit Film</h1>
+
+        <form action="{{ url_for('edit_film', id=film[0]) }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-800 p-6 rounded shadow">
+            <input type="text" name="title" value="{{ film[1] }}" placeholder="Judul" required class="p-2 rounded bg-gray-700">
+            <input type="text" name="mood" value="{{ film[2] }}" placeholder="Mood" required class="p-2 rounded bg-gray-700">
+            <input type="text" name="genre" value="{{ film[3] }}" placeholder="Genre" required class="p-2 rounded bg-gray-700">
+            <input type="text" name="release_year" value="{{ film[4] }}" placeholder="Tahun Rilis" required class="p-2 rounded bg-gray-700">
+            <textarea name="description" placeholder="Deskripsi" required class="p-2 rounded bg-gray-700 md:col-span-2">{{ film[5] }}</textarea>
+            <input type="text" name="rating" value="{{ film[6] }}" placeholder="Rating" required class="p-2 rounded bg-gray-700">
+            <input type="text" name="image_url" value="{{ film[7] }}" placeholder="Link Gambar (Opsional)" class="p-2 rounded bg-gray-700">
+            <div class="md:col-span-2 flex justify-between mt-4">
+                <a href="{{ url_for('films') }}" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-white">Batal</a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white font-semibold">Simpan Perubahan</button>
+            </div>
+        </form>              
+    </div>
+</body>
+</html>

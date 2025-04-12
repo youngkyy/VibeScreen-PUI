@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile - VibeScreen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="p-5">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <a href="/profile">
+          <img id="headerProfilePic" src="{{ session['user'].get('profile_picture', 'https://i.pinimg.com/474x/7b/12/d2/7b12d287221c0adf5b4efcdf326c178f.jpg') }}" class="w-6 h-6 rounded-full" alt="User Profile">
+        </a>
+        <h1 class="text-xl font-bold">VibeScreen</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-sm text-gray-400">Hi, {{ session['user']['username'] }}</span>
+        <a href="/logout" class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded">Logout</a>
+      </div>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="mt-6 text-center">
+      <h1 class="text-3xl font-bold italic">User Profile</h1>
+      <p class="text-gray-400 mt-2">Welcome, {{ session['user']['username'] }}! Here are your details:</p>
+
+      <!-- Display Info -->
+      <div class="mt-4 bg-gray-800 p-4 rounded-lg">
+        <img id="previewProfilePic" src="{{ session['user'].get('profile_picture', 'https://i.pinimg.com/474x/7b/12/d2/7b12d287221c0adf5b4efcdf326c178f.jpg') }}" class="w-24 h-24 mx-auto rounded-full border mb-4 object-cover" />
+        <h2 class="font-bold text-lg">Email: <span>{{ session['user']['email'] }}</span></h2>
+        <p class="text-gray-400">Manage your profile settings here.</p>
+      </div>
+
+      <!-- Edit Profile -->
+      <div class="mt-6 text-center">
+        <h2 class="text-2xl font-semibold">Edit Profile</h2>
+        <form action="{{ url_for('edit_profile') }}" method="POST" enctype="multipart/form-data" class="mt-4 space-y-4 max-w-md mx-auto text-left">
+          <label class="block">
+            <span class="text-gray-300">New Username</span>
+            <input type="text" name="username" placeholder="New Username" class="w-full mt-1 p-2 rounded bg-gray-700 text-white" value="{{ session['user']['username'] }}">
+          </label>
+
+          <label class="block">
+            <span class="text-gray-300">Profile Picture</span>
+            <input type="file" name="profile_picture" accept="image/*" class="block w-full mt-1 text-sm text-gray-300" onchange="previewImage(event)">
+          </label>
+
+          <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded">Simpan Perubahan</button>
+        </form>
+      </div>
+
+      <!-- Ganti Password -->
+      <div class="mt-10 text-center mb-14">
+        <h2 class="text-2xl font-semibold mb-2">Ganti Password</h2>
+        <form action="{{ url_for('change_password') }}" method="POST" class="mt-4 space-y-4 max-w-md mx-auto text-left">
+          <label class="block">
+            <span class="text-gray-300">Password Lama</span>
+            <input type="password" name="old_password" required class="w-full mt-1 p-2 rounded bg-gray-700 text-white">
+          </label>
+
+          <label class="block">
+            <span class="text-gray-300">Password Baru</span>
+            <input type="password" name="new_password" required class="w-full mt-1 p-2 rounded bg-gray-700 text-white">
+          </label>
+
+          <label class="block">
+            <span class="text-gray-300">Konfirmasi Password Baru</span>
+            <input type="password" name="confirm_password" required class="w-full mt-1 p-2 rounded bg-gray-700 text-white">
+          </label>
+
+          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Ganti Password</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="fixed bottom-0 left-0 right-0 bg-gray-800 p-4 flex justify-around">
+    <a href="/" class="text-center">🏠 Dashboard</a>
+  </div>
+
+  <!-- Preview Gambar -->
+  <script>
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const preview = document.getElementById('previewProfilePic');
+        preview.src = reader.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+  <!-- Validasi Ganti Password -->
+  <script>
+    const passwordForm = document.querySelector('form[action="{{ url_for("change_password") }}"]');
+    if (passwordForm) {
+      passwordForm.addEventListener("submit", function(e) {
+        const newPass = passwordForm.querySelector('[name="new_password"]').value;
+        const confirm = passwordForm.querySelector('[name="confirm_password"]').value;
+
+        if (newPass.length < 6) {
+          e.preventDefault();
+          Swal.fire({
+            icon: 'warning',
+            title: 'Password terlalu pendek',
+            text: 'Password baru harus minimal 6 karakter.'
+          });
+        } else if (newPass !== confirm) {
+          e.preventDefault();
+          Swal.fire({
+            icon: 'warning',
+            title: 'Konfirmasi tidak cocok',
+            text: 'Password baru dan konfirmasi tidak sama.'
+          });
+        }
+      });
+    }
+  </script>
+
+  <!-- SweetAlert untuk flash messages -->
+  <script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          Swal.fire({
+            icon: "{{ 'success' if category == 'success' else 'error' }}",
+            title: "{{ 'Berhasil' if category == 'success' else 'Gagal' }}",
+            text: "{{ message }}",
+            confirmButtonText: "OK"
+          });
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </script>
+
+</body>
+</html>

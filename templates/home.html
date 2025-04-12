@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin - VibeScreen</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .profile-pic:hover {
+      transform: scale(1.1);
+      transition: transform 0.2s;
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+  <div class="p-5">
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <a href="/profile">
+          <img 
+            src="{{ session['user'].get('profile_picture', 'https://i.pinimg.com/474x/7b/12/d2/7b12d287221c0adf5b4efcdf326c178f.jpg') }}" 
+            class="w-6 h-6 rounded-full object-cover profile-pic" 
+            alt="User Profile">
+        </a>
+        <h1 class="text-xl font-bold">VibeScreen Admin</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span class="text-sm text-gray-400">Hi, {{ session['user']['username'] }} (Admin)</span>
+        <a href="#" onclick="confirmLogout()" class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded">Logout</a>
+      </div>
+    </div>
+
+    <!-- Welcome Text -->
+    <div class="mt-8 text-center">
+      <h1 class="text-3xl font-bold italic text-purple-400">Admin Dashboard</h1>
+      <p class="text-gray-400 mt-2">Kelola data film dan musik dari satu tempat</p>
+    </div>
+
+    <!-- Admin Quick Navigation -->
+    <div class="flex justify-center gap-6 mt-8">
+      <a href="/films" class="bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg text-lg font-semibold">
+        🎬 Kelola Film
+      </a>
+      <a href="/music" class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg text-lg font-semibold">
+        🎵 Kelola Musik
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="fixed bottom-0 left-0 right-0 bg-gray-800 p-4 flex justify-around">
+    <a href="/" class="text-center">🏠 Dashboard</a>
+    <a href="/profile" class="text-center">👤 Profil</a>
+  </div>
+
+  <!-- Logout Confirmation Script -->
+  <script>
+    function confirmLogout() {
+      Swal.fire({
+        title: 'Yakin ingin logout?',
+        text: "Kamu akan keluar dari akun admin.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Ya, Logout',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/logout";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
